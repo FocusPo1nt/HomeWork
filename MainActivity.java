@@ -18,17 +18,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (!isOnline()){
-            Toast.makeText(MainActivity.this,"Необходимо подключение к интернету",Toast.LENGTH_SHORT).show();
-            return;
-        }
-
         //Обработка ввода URL
         final EditText editURL = (EditText) findViewById(R.id.editText);
         editURL.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                    if (!isOnline()){
+                        Toast.makeText(MainActivity.this,"Необходимо подключение к интернету",Toast.LENGTH_SHORT).show();
+                        return true;
+                    }
                     Intent intent = new Intent(MainActivity.this, HTMLActivity.class);
                     intent.putExtra("URL", checkURL(editURL.getText().toString()));
                     startActivity(intent);
